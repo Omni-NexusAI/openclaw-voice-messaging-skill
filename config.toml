@@ -6,6 +6,19 @@
 # Documentation: https://github.com/Omni-NexusAI/agent-voice-messaging
 
 # ==============================================================================
+# Default Behavior Configuration
+# ==============================================================================
+
+[defaults]
+# When responding to a VOICE message, include the text transcription
+# by default. Only send voice-only if user explicitly requests it.
+include_transcription_on_voice_response = true
+
+# When responding to a TEXT message, do NOT send voice by default.
+# Only send voice if user explicitly asks for it.
+voice_response_to_text_message = false
+
+# ==============================================================================
 # STT (Speech-to-Text) Configuration
 # ==============================================================================
 

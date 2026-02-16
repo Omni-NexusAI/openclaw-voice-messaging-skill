@@ -13,6 +13,53 @@
 
 ---
 
+## 🎯 Default Behaviors
+
+The agent-voice-messaging library uses smart defaults for voice messaging interactions:
+
+### Default Behavior #1: Always Include AI Response Transcription
+
+When a user sends a **voice message**, the agent ALWAYS responds with:
+- ✅ **Voice audio file** (the AI response synthesized)
+- ✅ **Text transcription** of the AI response
+
+The transcription is included by default. Only send voice-only if the user explicitly requests it.
+
+**Example workflow:**
+```
+User: Sends voice message → "What's the weather?"
+Agent: Responds with:
+  - Voice: "It's 72°F and sunny today!"
+  - Text: "It's 72°F and sunny today!"
+```
+
+### Default Behavior #2: Voice-Only on Text Messages (Unless Requested)
+
+When a user sends a **text message**, the agent responds with **text only** by default.
+
+Do NOT send voice output unless the user explicitly asks for it.
+
+**Example workflow:**
+```
+User: Sends text → "What's the weather?"
+Agent: Responds with:
+  - Text: "It's 72°F and sunny today!"
+  - Voice: (not sent)
+```
+
+### Summary of Default Behaviors
+
+| User Input | Default Response | How to Override |
+|------------|------------------|-----------------|
+| **Voice message** | Voice + Text transcription | User requests "voice-only" |
+| **Text message** | Text only | User asks for voice ("say it", "speak", etc.) |
+
+These defaults are designed for intuitive voice messaging. Users expect to see what was said, and voice responses to text messages can be jarring unless explicitly requested.
+
+---
+
+## Quick Start
+
 ## Quick Start
 
 ### Step 1: Install Dependencies

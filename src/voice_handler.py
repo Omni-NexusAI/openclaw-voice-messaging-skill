@@ -25,7 +25,7 @@ class VoiceHandler:
     - Platform-specific output (Telegram, Discord)
     """
 
-    def __init__(self, stt_provider, tts_provider, audio_processor=None):
+    def __init__(self, stt_provider, tts_provider, audio_processor=None, defaults=None):
         """
         Initialize voice handler
 
@@ -33,10 +33,12 @@ class VoiceHandler:
             stt_provider: STT provider instance
             tts_provider: TTS provider instance
             audio_processor: Optional audio processor for format conversion
+            defaults: Dict of default behavior settings
         """
         self.stt = stt_provider
         self.tts = tts_provider
         self.processor = audio_processor
+        self.defaults = defaults or {}
         self.logger = logging.getLogger(__name__)
 
     @classmethod
@@ -60,22 +62,23 @@ class VoiceHandler:
             config = toml.load(f)
 
         # Get STT config
-        stt_config = config["stt"]
+        stt_config = config["stt"].copy()  # Make a copy to avoid modifying original
         stt_provider_name = stt_config.pop("provider")
 
         # Create STT provider
-        stt_config.pop("provider")
         stt = ProviderFactory.create_stt(stt_provider_name, stt_config)
 
         # Get TTS config
-        tts_config = config["tts"]
+        tts_config = config["tts"].copy()  # Make a copy to avoid modifying original
         tts_provider_name = tts_config.pop("provider")
 
         # Create TTS provider
-        tts_config.pop("provider")
         tts = ProviderFactory.create_tts(tts_provider_name, tts_config)
 
-        return cls(stt, tts, audio_processor)
+        # Get defaults config
+        defaults = config.get("defaults", {})
+
+        return cls(stt, tts, audio_processor, defaults)
 
     def transcribe(self, audio_path: str) -> str:
         """
@@ -192,6 +195,42 @@ class VoiceHandler:
             self.logger.error(f"TTS test failed: {e}")
 
         return results
+
+    def should_include_transcription_on_voice_response(self) -> bool:
+        """
+        Check if transcription should be included when responding to voice messages.
+
+        Default behavior: Always include transcription when responding to voice.
+        Only omit if user explicitly requests voice-only response.
+
+        Returns:
+            True if transcription should be included, False otherwise
+        """
+        return self.defaults.get("include_transcription_on_voice_response", True)
+
+    def should_send_voice_to_text_message(self) -> bool:
+        """
+        Check if voice should be sent when responding to text messages.
+
+        Default behavior: Do NOT send voice to text messages.
+        Only send voice if user explicitly asks for it.
+
+        Returns:
+            True if voice should be sent, False otherwise
+        """
+        return self.defaults.get("voice_response_to_text_message", False)
+
+    def get_default_behavior_summary(self) -> dict:
+        """
+        Get a summary of the default behaviors.
+
+        Returns:
+            Dict with default behavior settings
+        """
+        return {
+            "include_transcription_on_voice_response": self.should_include_transcription_on_voice_response(),
+            "voice_response_to_text_message": self.should_send_voice_to_text_message()
+        }
 
 
 def quick_test():

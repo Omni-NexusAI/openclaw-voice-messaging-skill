@@ -10,7 +10,7 @@ import os
 # Add src to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
-from voice_handler import VoiceHandler
+from src.voice_handler import VoiceHandler
 
 
 def main():
@@ -85,6 +85,23 @@ def main():
                 print("  No voices found")
         except Exception as e:
             print(f"  Could not fetch voices: {e}")
+
+    # Test default behaviors
+    print("")
+    print("Testing default behaviors...")
+    defaults = handler.get_default_behavior_summary()
+    print(f"Include transcription on voice response: {defaults['include_transcription_on_voice_response']}")
+    print(f"Send voice to text message: {defaults['voice_response_to_text_message']}")
+
+    if defaults['include_transcription_on_voice_response']:
+        print("  ✓ Voice messages will include transcription")
+    else:
+        print("  ⚠ Voice messages will NOT include transcription")
+
+    if not defaults['voice_response_to_text_message']:
+        print("  ✓ Text messages will NOT receive voice responses")
+    else:
+        print("  ⚠ Text messages WILL receive voice responses")
 
     print("")
     print("✓ Test complete!")

@@ -1,5 +1,35 @@
 # Agent Voice Messaging - Quick Reference
 
+## Default Behaviors
+
+The agent-voice-messaging library uses smart defaults for voice messaging interactions:
+
+### Voice Input → Always Dual Output (Voice + Transcription)
+When a user sends a voice message, the agent ALWAYS responds with:
+- Voice audio file (AI response)
+- Text transcription of the AI response
+
+Only send voice-only if user explicitly requests it.
+
+### Text Input → Text Only (Unless Requested)
+When a user sends a text message, the agent responds with TEXT ONLY by default.
+Do NOT send voice output unless user explicitly asks for it.
+
+**Configuration (config.toml):**
+```toml
+[defaults]
+include_transcription_on_voice_response = true
+voice_response_to_text_message = false
+```
+
+**Summary:**
+| User Input | Default Response | Override |
+|------------|------------------|----------|
+| Voice | Voice + Text | User requests "voice-only" |
+| Text | Text only | User asks for voice |
+
+---
+
 ## What You Asked For
 
 1. ✅ **Voice messaging works** - Send voice from Telegram/Discord, receive voice back
