@@ -1,22 +1,23 @@
-# Voice Messaging Skill - Quick Reference
+# Agent Voice Messaging - Quick Reference
 
 ## What You Asked For
 
 1. ✅ **Voice messaging works** - Send voice from Telegram/Discord, receive voice back
 2. ✅ **Modular providers** - Swap ANY STT/TTS provider easily (not just Kokoro/Qwen3)
 3. ✅ **Simple setup** - Easy to install and use
-4. ⏸ **Full modularity/cross-platform** - Future work (for now, keep it simple)
+4. ✅ **Framework-agnostic** - Works with OpenClaw, LangChain, Agent Zero, and generic agents
+5. ⏸ **Full modularity/cross-platform** - Future work (for now, keep it simple)
 
 ---
 
 ## What I Created
 
-**Location:** `C:\Users\yepyy\.openclaw\workspace\voice-messaging-skill\`
+**Location:** `voice-messaging-skill/` (or `agent-voice-messaging/`)
 
 ### Files
 
 ```
-voice-messaging-skill/
+agent-voice-messaging/
 ├─ SKILL.md           # Skill description
 ├─ README.md          # Complete usage guide
 ├─ config.toml        # Configuration file (edit this to swap providers)
@@ -36,10 +37,10 @@ voice-messaging-skill/
 
 ### 1. You Send Voice Message
 ```
-Telegram/Discord → Voice Message → OpenClaw receives audio file
+Telegram/Discord → Voice Message → Your Agent receives audio file
 ```
 
-### 2. Skill Processes
+### 2. Library Processes
 ```
 Audio → STT Provider → Transcription → Your Agent Processing
 ```
@@ -48,6 +49,30 @@ Audio → STT Provider → Transcription → Your Agent Processing
 ```
 Response Text → TTS Provider → Voice Audio → Send back
 ```
+
+---
+
+## Framework Support
+
+### OpenClaw
+- Install as a skill
+- Automatic voice message handling
+- Native integration
+
+### LangChain
+- Use as a LangChain Tool
+- Integrate with LangChain agents
+- Chain-based workflows
+
+### Agent Zero
+- Direct Python integration
+- Custom workflow support
+- Agent Zero ecosystem compatibility
+
+### Generic Agents
+- Standalone Python module
+- Works with any Python code
+- No framework dependencies
 
 ---
 
@@ -108,7 +133,7 @@ api_key = "${OPENAI_API_KEY}"
 ### Option 1: Automated (Recommended)
 
 ```powershell
-cd C:\Users\yepyy\.openclaw\workspace\voice-messaging-skill
+cd agent-voice-messaging
 .\setup.ps1
 ```
 
@@ -118,7 +143,7 @@ cd C:\Users\yepyy\.openclaw\workspace\voice-messaging-skill
 - ✅ Check/install FFmpeg
 - ✅ Check Kokoro TTS
 - ✅ Test setup
-- ✅ Copy files to OpenClaw skills directory
+- ✅ Copy files to OpenClaw skills directory (if using OpenClaw)
 
 ### Option 2: Manual
 
@@ -129,11 +154,24 @@ pip install faster-whisper requests pyav tomli
 # 2. Install FFmpeg (if not already installed)
 choco install ffmpeg
 
-# 3. Copy to OpenClaw skills
-xcopy voice-messaging-skill C:\Users\yepyy\.openclaw\skills\ /E /I
+# 3. Copy to OpenClaw skills (if using OpenClaw)
+xcopy agent-voice-messaging C:\Users\yepyy\.openclaw\skills\ /E /I
 
-# 4. Install in OpenClaw
-openclaw skills install C:\Users\yepyy\.openclaw\skills\voice-messaging-skill
+# 4. Install in OpenClaw (if using OpenClaw)
+openclaw skills install C:\Users\yepyy\.openclaw\skills\agent-voice-messaging
+```
+
+### For Other Frameworks
+
+```powershell
+# Just install dependencies
+pip install faster-whisper requests pyav tomli
+
+# Install FFmpeg
+choco install ffmpeg
+
+# Use as a standalone Python module
+# No framework-specific installation needed!
 ```
 
 ---
@@ -143,7 +181,7 @@ openclaw skills install C:\Users\yepyy\.openclaw\skills\voice-messaging-skill
 ### Test 1: Quick Test
 
 ```powershell
-cd C:\Users\yepyy\.openclaw\skills\voice-messaging-skill
+cd agent-voice-messaging
 python -c "from src.voice_handler import quick_test; quick_test()"
 ```
 
@@ -241,16 +279,18 @@ export HF_HUB_CACHE=/path/to/cache
 ✅ **Platform compatibility** - Telegram and Discord supported
 ✅ **Local-first** - No cloud APIs required
 ✅ **Extensible** - Easy to add new providers
+✅ **Framework-agnostic** - Works with OpenClaw, LangChain, Agent Zero, and generic agents
 
 ---
 
 ## Next Steps
 
-1. ✅ Install skill (run setup.ps1)
+1. ✅ Install library (run setup.ps1 or install dependencies manually)
 2. ✅ Test with quick_test()
 3. ✅ Send real voice message
 4. ⏳ Swap providers as needed (edit config.toml)
-5. ⏳ Future: Full modularity and cross-platform support
+5. ⏳ Integrate with your preferred framework
+6. ⏳ Future: Full modularity and cross-platform support
 
 ---
 

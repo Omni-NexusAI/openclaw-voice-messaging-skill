@@ -3,7 +3,7 @@
 # This configuration file controls STT (Speech-to-Text) and TTS (Text-to-Speech) providers.
 # Edit this file to switch between local and cloud providers.
 #
-# Documentation: https://github.com/Omni-NexusAI/openclaw-voice-messaging-skill
+# Documentation: https://github.com/Omni-NexusAI/agent-voice-messaging
 
 # ==============================================================================
 # STT (Speech-to-Text) Configuration
@@ -11,7 +11,7 @@
 
 [stt]
 # Provider selection: "faster-whisper", "openai", or "google"
-provider = "faster-whisper"
+provider = "openai"
 
 # ----------------------------------------
 # faster-whisper (Local, Free, Privacy-first)
@@ -65,12 +65,12 @@ provider = "kokoro"
 # 4. Without GPU (slower): Remove --gpus all from docker run command
 #
 # Available voices:
-#   af_bella, af_heart, af_sky, af_michael, am_michael, bm_george,
-#   bm_lewis, bf_emma, bf_isabella
+#   af_alloy, af_aoede, af_bella, af_heart, af_jadzia, af_jessica, af_kore,
+#   af_nicole, af_nova, af_river, and 57 more
 #
-base_url = "http://localhost:8880/v1"  # Kokoro server endpoint
-voice = "af_bella"                     # Default voice
-format = "ogg"                         # ogg, mp3, wav, opus, flac, m4a, pcm
+base_url = "http://localhost:8880/v1"  # Kokoro server endpoint (uses /v1!)
+voice = "am_michael"                   # Default voice (Michael is am_michael, not bf_michael)
+format = "mp3"                         # mp3, wav, opus, flac, m4a, pcm (Kokoro doesn't support ogg!)
 speed = 1.0                            # 0.5 to 2.0 (1.0 = normal speed)
 
 # ----------------------------------------

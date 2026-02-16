@@ -2,12 +2,12 @@
 
 ## Repository Created
 
-**Repository URL:** https://github.com/Omni-NexusAI/openclaw-voice-messaging-skill
+**Repository URL:** https://github.com/Omni-NexusAI/agent-voice-messaging
 
 **Owner:** Omni-NexusAI
 **Default Branch:** main ✅
 **Visibility:** Public
-**Description:** Modular voice messaging skill for OpenClaw with swappable STT/TTS providers
+**Description:** Modular voice messaging library for agents with swappable STT/TTS providers (OpenClaw, LangChain, Agent Zero, and generic agents)
 
 ---
 
@@ -18,8 +18,8 @@
 - [x] Initialized git repository in `C:\Users\yepyy\.openclaw\workspace\voice-messaging-skill`
 - [x] Set main branch as default (master removed)
 - [x] Created GitHub repository using `gh repo create`
-- [x] Repository name: `openclaw-voice-messaging-skill`
-- [x] Description: "Modular voice messaging skill for OpenClaw with swappable STT/TTS providers"
+- [x] Repository name: `agent-voice-messaging`
+- [x] Description: "Modular voice messaging library for agents with swappable STT/TTS providers"
 - [x] Pushed to GitHub with main as default branch
 
 ### ✅ 2. Enhanced README.md
@@ -202,7 +202,7 @@ The README includes comprehensive troubleshooting for:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/Omni-NexusAI/openclaw-voice-messaging-skill.git
+   git clone https://github.com/Omni-NexusAI/agent-voice-messaging.git
    ```
 
 2. Follow the Quick Start guide in README.md
@@ -219,7 +219,7 @@ The README includes comprehensive troubleshooting for:
 
 ## Repository Verification
 
-✅ Repository URL: https://github.com/Omni-NexusAI/openclaw-voice-messaging-skill
+✅ Repository URL: https://github.com/Omni-NexusAI/agent-voice-messaging
 ✅ Default branch: main
 ✅ All files pushed successfully
 ✅ README includes all 7 providers (3 STT, 4 TTS)

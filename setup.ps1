@@ -84,7 +84,7 @@ try {
 # Install in OpenClaw
 Write-Host ""
 Write-Host "Installing skill in OpenClaw..." -ForegroundColor Yellow
-$skillPath = Join-Path $env:USERPROFILE, ".openclaw\skills\voice-messaging-skill"
+$skillPath = Join-Path $env:USERPROFILE, ".openclaw\skills\agent-voice-messaging"
 
 # Create target directory
 if (-not (Test-Path $skillPath)) {

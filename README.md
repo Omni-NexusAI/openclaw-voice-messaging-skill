@@ -1,17 +1,19 @@
-# 🎤 OpenClaw Voice Messaging Skill
+# 🎤 Agent Voice Messaging
 
 [![Python](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![STT](https://img.shields.io/badge/STT-Whisper%20%7C%20OpenAI%20%7C%20Google-orange.svg)](#supported-stt-providers)
 [![TTS](https://img.shields.io/badge/TTS-Kokoro%20%7C%20Qwen3%20%7C%20OpenAI%20%7C%20ElevenLabs-purple.svg)](#supported-tts-providers)
 
-**Modular voice messaging for OpenClaw** - Send voice messages through Telegram/Discord and receive voice responses with swappable local and cloud STT/TTS providers.
+**Modular voice messaging for agents** - Send voice messages through Telegram/Discord and receive voice responses with swappable local and cloud STT/TTS providers.
+
+**Framework Support:** OpenClaw • LangChain • Agent Zero • Generic Agents
 
 ---
 
-## 🎯 What This Skill Does
+## 🎯 What This Library Does
 
-The Voice Messaging Skill enables seamless voice communication in OpenClaw:
+Agent Voice Messaging enables seamless voice communication in your agent applications:
 
 1. **Receive voice messages** from Telegram or Discord
 2. **Transcribe to text** using your preferred STT provider
@@ -20,6 +22,12 @@ The Voice Messaging Skill enables seamless voice communication in OpenClaw:
 5. **Send back audio** in the platform-appropriate format
 
 All of this happens automatically - no additional code needed!
+
+**Compatible with:**
+- **OpenClaw** - Install as a skill
+- **LangChain** - Use as a tool or callback
+- **Agent Zero** - Integrate with agent workflows
+- **Generic Agents** - Import as a Python module
 
 ---
 
@@ -33,6 +41,7 @@ All of this happens automatically - no additional code needed!
 ✅ **Docker-ready** - Pre-configured for local STT/TTS endpoints
 ✅ **GPU acceleration** - CUDA support for faster processing
 ✅ **Extensible design** - Easy to add new providers
+✅ **Framework-agnostic** - Works with OpenClaw, LangChain, Agent Zero, and any Python agent
 
 ---
 
@@ -118,21 +127,70 @@ speed = 1.0
 ### Step 4: Test Your Setup
 
 ```bash
-# Navigate to skill directory
-cd voice-messaging-skill
+# Navigate to library directory
+cd agent-voice-messaging
 
 # Test the setup
 python -c "from src.voice_handler import quick_test; quick_test()"
 ```
 
-### Step 5: Install in OpenClaw
+### Step 5: Install in Your Framework
 
+#### For OpenClaw
 ```bash
 # Copy to OpenClaw skills directory
-cp -r voice-messaging-skill ~/.openclaw/skills/
+cp -r agent-voice-messaging ~/.openclaw/skills/
 
 # Install
-openclaw skills install ~/.openclaw/skills/voice-messaging-skill
+openclaw skills install ~/.openclaw/skills/agent-voice-messaging
+```
+
+#### For LangChain
+```python
+from langchain.agents import Tool
+from voice_messaging.src.voice_handler import VoiceHandler
+
+# Initialize voice handler
+handler = VoiceHandler.from_config("config.toml")
+
+# Create LangChain tool
+voice_tool = Tool(
+    name="Voice Messaging",
+    func=lambda text: handler.synthesize(text, "response.ogg"),
+    description="Convert text to voice and send back to user"
+)
+```
+
+#### For Agent Zero
+```python
+from agent_zero import Agent
+from voice_messaging.src.voice_handler import VoiceHandler
+
+# Initialize voice handler
+handler = VoiceHandler.from_config("config.toml")
+
+# Use in agent workflow
+def process_voice_message(audio_path: str) -> str:
+    # Transcribe
+    text = handler.transcribe(audio_path)
+    # Process with your agent
+    response = your_agent.process(text)
+    # Synthesize response
+    handler.synthesize(response, "response.ogg")
+    return response
+```
+
+#### For Generic Python Agents
+```python
+from voice_messaging.src.voice_handler import VoiceHandler
+
+# Initialize
+handler = VoiceHandler.from_config("config.toml")
+
+# Use in your agent code
+text = handler.transcribe("user_voice.ogg")
+response = your_agent.process(text)
+handler.synthesize(response, "response.ogg")
 ```
 
 ### Step 6: Send a Voice Message!
@@ -702,6 +760,7 @@ Contributions welcome! Areas for improvement:
 - Performance optimizations
 - Better error handling and logging
 - Additional platform support (Slack, Matrix, etc.)
+- Framework-specific integrations (OpenClaw, LangChain, Agent Zero, etc.)
 
 ---
 
