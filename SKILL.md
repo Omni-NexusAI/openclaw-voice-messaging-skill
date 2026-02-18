@@ -1,3 +1,16 @@
+---
+name: agent-voice-messaging
+description: Modular voice messaging with swappable STT/TTS providers for Telegram/Discord
+metadata:
+  {
+    "openclaw":
+      {
+        "emoji": "🎙️",
+        "requires": { "bins": ["mcporter"] },
+      },
+  }
+---
+
 # Agent Voice Messaging
 
 **Purpose**: Enable voice message communication through Telegram/Discord with local STT/TTS
