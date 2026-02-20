@@ -71,14 +71,73 @@ These defaults are designed for intuitive voice messaging. Users expect to see w
 
 ---
 
-## Quick Start
+## ⚠️ CRITICAL: How OpenClaw Agents Must Handle Voice Messages
+
+When you receive a voice message as an OpenClaw agent, you MUST follow these exact steps:
+
+### Step-by-Step Voice Message Handling
+
+1. **Transcribe the incoming voice message**
+   ```bash
+   whisper "<audio_file_path>" --model tiny
+   ```
+   Extract the transcribed text from the output.
+
+2. **Process the text** to generate your response as you normally would.
+
+3. **Synthesize your response to audio** using the TTS tool:
+   ```
+   Use the `tts` tool with your response text.
+   This returns a path like: MEDIA:C:\...\voice-12345.mp3
+   ```
+
+4. **Convert to platform format** (Telegram needs OGG):
+   ```bash
+   ffmpeg -i "<tts_output_path>" -c:a libopus -b:a 64k "<output_ogg_path>"
+   ```
+
+5. **SEND THE ACTUAL AUDIO FILE** using the `message` tool:
+   ```
+   action: send
+   channel: telegram
+   target: telegram:<user_id>
+   message: <your text transcription>
+   media: <path_to_converted_ogg_file>
+   ```
+
+**❌ WRONG**: Returning `MEDIA:C:\path\to\audio.mp3` in your text response.
+**✅ CORRECT**: Using the `message` tool with `media` parameter to upload the audio file.
+
+### Example Correct Flow
+
+```
+1. User sends voice message (file_12.ogg)
+2. Agent runs: whisper "file_12.ogg" --model tiny
+3. Transcription: "What's the weather?"
+4. Agent generates response: "It's 72°F and sunny today!"
+5. Agent uses tts tool -> returns MEDIA:C:\temp\voice-12345.mp3
+6. Agent converts: ffmpeg -i "C:\temp\voice-12345.mp3" -c:a libopus "C:\temp\response.ogg"
+7. Agent sends via message tool:
+   - action: send
+   - channel: telegram
+   - target: telegram:6174226840
+   - message: "It's 72°F and sunny today!"
+   - media: C:\temp\response.ogg
+```
+
+### Why This Matters
+
+The `MEDIA:` prefix is a reference, not an upload. Users will NOT hear your voice response unless you actually send the audio file using the `message` tool with the `media` parameter.
+
+---
 
 ## Quick Start
 
 ### Step 1: Install Dependencies
 
 ```bash
-pip install faster-whisper requests pyav
+pip install openai-whisper requests pyav
+# or: pip install faster-whisper requests pyav
 ```
 
 ### Step 2: Configure Providers
@@ -87,14 +146,14 @@ Edit `config.toml`:
 
 ```toml
 [stt]
-provider = "faster-whisper"  # Options: faster-whisper, openai, google
-model = "base"
-device = "cpu"
+provider = "whisper"  # Options: whisper, faster-whisper, openai, google
+model = "tiny"        # tiny, base, small, medium, large
 
 [tts]
-provider = "kokoro"  # Options: kokoro, qwen3, openai, elevenlabs
+provider = "kokoro"   # Options: kokoro, qwen3, openai, elevenlabs
 base_url = "http://localhost:8880/v1"
-voice = "af_bella"
+voice = "am_michael"
+format = "mp3"        # Kokoro doesn't support OGG directly; convert with ffmpeg
 ```
 
 ### Step 3: Install in Your Framework
