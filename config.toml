@@ -10,6 +10,7 @@
 # ==============================================================================
 
 [defaults]
+auto_process_voice = true
 # When responding to a VOICE message, include the text transcription
 # by default. Only send voice-only if user explicitly requests it.
 include_transcription_on_voice_response = true
@@ -82,7 +83,7 @@ provider = "kokoro"
 #   af_nicole, af_nova, af_river, and 57 more
 #
 base_url = "http://localhost:8880/v1"  # Kokoro server endpoint (uses /v1!)
-voice = "am_michael"                   # Default voice (Michael is am_michael, not bf_michael)
+voice = "bm_michael"                   # Default voice (Michael is am_michael, not bf_michael)
 format = "mp3"                         # mp3, wav, opus, flac, m4a, pcm (Kokoro doesn't support ogg!)
 speed = 1.0                            # 0.5 to 2.0 (1.0 = normal speed)
 
