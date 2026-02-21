@@ -24,31 +24,23 @@ voice_response_to_text_message = false
 # ==============================================================================
 
 [stt]
-# Provider selection: "faster-whisper", "openai", or "google"
-provider = "openai"
+# Provider selection: "whisper" (local), "faster-whisper" (local), "openai" (cloud), or "google" (cloud)
+provider = "whisper"
 
 # ----------------------------------------
-# faster-whisper (Local, Free, Privacy-first)
+# Whisper (Local, Original OpenAI Whisper)
 # ----------------------------------------
-# Recommended for privacy and offline use
-# Downloaded automatically from Hugging Face on first use
-model = "base"              # tiny, base, small, medium, large-v3
-                            # tiny (39MB): fastest, lower accuracy
-                            # base (74MB): good balance (recommended)
-                            # small (244MB): better accuracy
-                            # medium (769MB): high accuracy
-                            # large-v3 (1550MB): best accuracy
-device = "cpu"              # cpu, cuda (GPU requires CUDA-enabled PyTorch)
-compute_type = "int8"       # int8 (fastest), float16, float32 (best quality)
-                            # int8 recommended for CPU, float16 for GPU
+# Most reliable on Windows
+model = "base"              # tiny, base, small, medium, large
+device = ""                 # empty for auto, or 'cuda', 'cpu'
 
 # ----------------------------------------
 # OpenAI Whisper (Cloud, Fast)
 # ----------------------------------------
 # Requires: export OPENAI_API_KEY="your-key-here"
 # Pricing: https://openai.com/pricing
-# model = "whisper-1"       # Only option available
-# api_key = "${OPENAI_API_KEY}"  # or set as environment variable
+#model = "whisper-1"       # Only option available
+#api_key = "${OPENAI_API_KEY}"  # or set as environment variable
 # language = "en"           # Optional: auto-detect if omitted
 
 # ----------------------------------------
@@ -83,8 +75,8 @@ provider = "kokoro"
 #   af_nicole, af_nova, af_river, and 57 more
 #
 base_url = "http://localhost:8880/v1"  # Kokoro server endpoint (uses /v1!)
-voice = "bm_michael"                   # Default voice (Michael is am_michael, not bf_michael)
-format = "mp3"                         # mp3, wav, opus, flac, m4a, pcm (Kokoro doesn't support ogg!)
+voice = "am_michael"                   # Default voice (Michael is am_michael, not bf_michael)
+format = "opus"                         # mp3, wav, opus, flac, m4a, pcm (Kokoro doesn't support ogg!)
 speed = 1.0                            # 0.5 to 2.0 (1.0 = normal speed)
 
 # ----------------------------------------
