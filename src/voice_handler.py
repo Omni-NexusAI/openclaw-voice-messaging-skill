@@ -4,6 +4,7 @@ Handles voice message processing with modular STT/TTS providers
 """
 
 import os
+import re
 import tempfile
 import logging
 from pathlib import Path
@@ -12,6 +13,27 @@ from typing import Optional
 from .providers import ProviderFactory
 from .stt_providers import quick_transcribe
 from .tts_providers import quick_synthesize
+
+
+def _expand_env_vars(config: dict) -> dict:
+    """Expand environment variables in config values (e.g., ${OPENAI_API_KEY})"""
+    env_pattern = re.compile(r'\$\{([^}]+)\}')
+    
+    def expand_value(value):
+        if isinstance(value, str):
+            match = env_pattern.search(value)
+            if match:
+                env_var = match.group(1)
+                env_value = os.environ.get(env_var, "")
+                return env_pattern.sub(env_value, value)
+            return value
+        elif isinstance(value, dict):
+            return {k: expand_value(v) for k, v in value.items()}
+        elif isinstance(value, list):
+            return [expand_value(v) for v in value]
+        return value
+    
+    return expand_value(config)
 
 
 class VoiceHandler:
@@ -60,6 +82,9 @@ class VoiceHandler:
 
         with open(config_path, 'r') as f:
             config = toml.load(f)
+        
+        # Expand environment variables in config
+        config = _expand_env_vars(config)
 
         # Get STT config
         stt_config = config["stt"].copy()  # Make a copy to avoid modifying original

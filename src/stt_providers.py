@@ -2,10 +2,64 @@
 STT (Speech-to-Text) provider implementations
 """
 
+import os
 import asyncio
 from typing import AsyncGenerator
 
 from .providers import STTProvider, ProviderFactory
+
+
+class WhisperSTT(STTProvider):
+    """OpenAI Whisper (original) STT provider - Local, works reliably on Windows"""
+
+    def __init__(self, model: str = "tiny", device: str = None, **kwargs):
+        """
+        Initialize original Whisper STT
+
+        Args:
+            model: Model size (tiny, base, small, medium, large)
+            device: Device to use (None for auto, 'cuda', 'cpu')
+        """
+        # Fix Windows encoding and OpenMP issues
+        os.environ['PYTHONIOENCODING'] = 'utf-8'
+        os.environ['KMP_DUPLICATE_LIB_OK'] = 'TRUE'
+
+        try:
+            import whisper
+        except ImportError:
+            raise ImportError("whisper not installed. Run: pip install openai-whisper")
+
+        self.model_name = model
+        # Only pass device if specified, otherwise let whisper auto-detect
+        if device:
+            self.model = whisper.load_model(model, device=device)
+        else:
+            self.model = whisper.load_model(model)
+
+    def transcribe(self, audio_path: str) -> dict:
+        """
+        Transcribe audio file to text
+
+        Args:
+            audio_path: Path to audio file
+
+        Returns:
+            dict with transcription results
+        """
+        result = self.model.transcribe(audio_path)
+
+        return {
+            "text": result["text"].strip(),
+            "language": result.get("language", "en"),
+            "language_probability": 1.0,
+            "duration": 0  # Not easily available from whisper
+        }
+
+    async def transcribe_stream(self, audio_stream) -> AsyncGenerator[dict, None]:
+        """
+        Transcribe streaming audio (placeholder for future)
+        """
+        raise NotImplementedError("Streaming not yet implemented for whisper")
 
 
 class FasterWhisperSTT(STTProvider):
@@ -167,6 +221,7 @@ class GoogleCloudSTT(STTProvider):
 
 
 # Register providers
+ProviderFactory.register_stt("whisper", WhisperSTT)
 ProviderFactory.register_stt("faster-whisper", FasterWhisperSTT)
 ProviderFactory.register_stt("openai", OpenAIWhisperSTT)
 ProviderFactory.register_stt("google", GoogleCloudSTT)
