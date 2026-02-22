@@ -131,7 +131,21 @@ The `MEDIA:` prefix is a reference, not an upload. Users will NOT hear your voic
 
 ---
 
-## Quick Start
+### Option A: Onboarding Wizard (Recommended)
+
+Run the guided setup wizard to automatically configure for your environment:
+
+```bash
+python onboarding_wizard.py
+```
+
+The wizard will:
+1. Auto-detect installed STT/TTS providers
+2. Ask about your agent framework (OpenClaw, LangChain, etc.)
+3. Generate a `config.toml` tailored to your setup
+4. Create integration code for your framework
+
+### Option B: Manual Setup
 
 ### Step 1: Install Dependencies
 
