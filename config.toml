@@ -10,6 +10,7 @@
 # ==============================================================================
 
 [defaults]
+auto_process_voice = true
 # When responding to a VOICE message, include the text transcription
 # by default. Only send voice-only if user explicitly requests it.
 include_transcription_on_voice_response = true
@@ -23,43 +24,23 @@ voice_response_to_text_message = false
 # ==============================================================================
 
 [stt]
-# Provider selection: "whisper" (recommended), "faster-whisper", "openai", or "google"
+# Provider selection: "whisper" (local), "faster-whisper" (local), "openai" (cloud), or "google" (cloud)
 provider = "whisper"
 
 # ----------------------------------------
-# whisper (OpenAI Whisper - Local, Reliable on Windows)
+# Whisper (Local, Original OpenAI Whisper)
 # ----------------------------------------
-# The original OpenAI Whisper library - works reliably on all platforms
-# Install: pip install openai-whisper
-model = "tiny"             # tiny (39MB): fastest, good for voice messages
-                            # base (74MB): good balance
-                            # small (244MB): better accuracy
-                            # medium (769MB): high accuracy
-                            # large (1550MB): best accuracy
-# device = "cuda"          # Uncomment if you have GPU
-
-# ----------------------------------------
-# faster-whisper (Local, Free, Privacy-first)
-# ----------------------------------------
-# Recommended for privacy and offline use
-# Downloaded automatically from Hugging Face on first use
-# model = "base"              # tiny, base, small, medium, large-v3
-#                             # tiny (39MB): fastest, lower accuracy
-#                             # base (74MB): good balance (recommended)
-#                             # small (244MB): better accuracy
-#                             # medium (769MB): high accuracy
-#                             # large-v3 (1550MB): best accuracy
-# device = "cpu"              # cpu, cuda (GPU requires CUDA-enabled PyTorch)
-# compute_type = "int8"       # int8 (fastest), float16, float32 (best quality)
-#                             # int8 recommended for CPU, float16 for GPU
+# Most reliable on Windows
+model = "base"              # tiny, base, small, medium, large
+device = ""                 # empty for auto, or 'cuda', 'cpu'
 
 # ----------------------------------------
 # OpenAI Whisper (Cloud, Fast)
 # ----------------------------------------
 # Requires: export OPENAI_API_KEY="your-key-here"
 # Pricing: https://openai.com/pricing
-# model = "whisper-1"       # Only option available
-# api_key = "${OPENAI_API_KEY}"  # or set as environment variable
+#model = "whisper-1"       # Only option available
+#api_key = "${OPENAI_API_KEY}"  # or set as environment variable
 # language = "en"           # Optional: auto-detect if omitted
 
 # ----------------------------------------
@@ -95,7 +76,7 @@ provider = "kokoro"
 #
 base_url = "http://localhost:8880/v1"  # Kokoro server endpoint (uses /v1!)
 voice = "am_michael"                   # Default voice (Michael is am_michael, not bf_michael)
-format = "mp3"                         # mp3, wav, opus, flac, m4a, pcm (Kokoro doesn't support ogg!)
+format = "opus"                         # mp3, wav, opus, flac, m4a, pcm (Kokoro doesn't support ogg!)
 speed = 1.0                            # 0.5 to 2.0 (1.0 = normal speed)
 
 # ----------------------------------------
@@ -143,11 +124,7 @@ speed = 1.0                            # 0.5 to 2.0 (1.0 = normal speed)
 # ==============================================================================
 
 [audio]
-# temp_dir is auto-detected using Python's tempfile.gettempdir()
-# On Windows: C:\Users\<user>\AppData\Local\Temp\voice-messaging
-# On macOS/Linux: /tmp/voice-messaging
-# Uncomment below to override:
-# temp_dir = "/tmp/voice-messaging"
+temp_dir = "/tmp/voice-messaging"     # Temporary directory for audio processing
 sample_rate = 16000                    # Sample rate for STT (Whisper expects 16kHz)
 channels = 1                           # Audio channels (1 = mono)
 
